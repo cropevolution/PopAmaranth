@@ -3,7 +3,7 @@
 #### Raisd analysis:
 
 | species  | total sites detected  | >0.5% threshold  |  cut-off |
-|---|---|---|
+|---|---|---|---|
 |caudatus | 1765126  |   8826 | 8.38875e-05
 |cruentus   | 1654914  | 8275 | 8.827435e-05
 |hypochondriacus  | 1793173  |  8966 | 8.65414e-05
