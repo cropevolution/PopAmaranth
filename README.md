@@ -3,7 +3,7 @@
 #### Raisd analysis:
 
 | species  | total sites detected  | sites>1% threshold  |  nr windows | cut-off |
-|---|---|---|---|
+|---|---|---|---|---|
 |caudatus | 1765126  |   68235 |  974 | 4.111e-05
 |cruentus   | 1654914  | 42272  | 1097| 5.345e-05
 
