@@ -14,19 +14,19 @@
 
 #### number of sites (saf files)
 
-| species  | total sites   |   
-|---|---|---|
-|caudatus | 331601031  |   
-|cruentus   | 332584629  |
+| species  | total sites  
+|---|---|
+|caudatus | 331601031  
+|cruentus   | 332584629
 |hypochondriacus  | 363428489   
-|hybridus   | 259369182  |  
-|quitensis   |   347013541 |   
+|hybridus   | 259369182
+|quitensis   |   347013541 
 
 
 #### number of SNPs
 
 | species  | total sites    
-|---|---|---|
+|---|---|
 |caudatus |  4961210  
 |cruentus   |  4075368
 |hypochondriacus  | 4551278
