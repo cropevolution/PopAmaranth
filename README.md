@@ -2,13 +2,14 @@
 
 #### Raisd analysis:
 
-| species  | total sites detected  | >0.5% threshold  |  cut-off |
+| species  | total sites detected  | sites>0.5% threshold  |  nr windows | cut-off |
 |---|---|---|---|
-|caudatus | 1765126  |   8826 | 8.38875e-05
-|cruentus   | 1654914  | 8275 | 8.827435e-05
-|hypochondriacus  | 1793173  |  8966 | 8.65414e-05
-|hybridus   | 4343653  |  21714 | 3.787e-05
-|quitensis   |   1585410 |   7924 | 0.0001521
+|caudatus | 1765126  |   68235 |  974 | 4.111e-05
+|cruentus   | 1654914  | 42272  | 1097| 5.345e-05
+
+|hypochondriacus  | 1793173  |  42365 | 1122 | 5.33828e-05
+|hybridus   | 4343653  |  170313 | 2453 |2.269e-05
+|quitensis   |   1585410 |   15854 | 1276 | 9.241e-05
 
 
 

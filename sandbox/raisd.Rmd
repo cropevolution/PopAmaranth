@@ -26,26 +26,26 @@ quitensis %>%
   cruentus %>%
     filter(V8>5.345e-05 
 ) %>%
-    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/cruentus_sweeps")
+    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/cruentus_sweeps", sep ='\t')
   
   
   caudatus %>%
     filter(V8>4.111e-05) %>%
-    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/caudatus_sweeps")
+    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/caudatus_sweeps", sep ='\t')
 
   hypochondriacus %>%
     filter(V8>5.33828e-05) %>%
-      fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/hypochondriacus_sweeps")
+      fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/hypochondriacus_sweeps", sep ='\t')
 
   
     hybridus %>%
     filter(V8>2.269e-05 ) %>%
-      fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/hybridus_sweeps")
+      fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/hybridus_sweeps", sep ='\t')
     
     
     quitensis %>%
       filter(V8>9.241e-05) %>%
-            fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/quitensis_sweeps")
+            fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/quitensis_sweeps", sep ='\t')
 
 ```
 
