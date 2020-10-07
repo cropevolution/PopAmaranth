@@ -1,6 +1,6 @@
 ---
 title: "Raisd_reports"
-output: html_notebook
+processed: html_notebook
 ---
 
 
@@ -18,19 +18,41 @@ hybridus<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hyb
 
 quitensis<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/quitensis/RAiSD_Report_quitensis")
 
-quantile(caudatus$V8, 0.995)
-caudatus %>%
-  filter(V8>4.111e-05 )
+quantile(caudatus$V8, 0.99)
+quitensis %>%
+  filter(V8>(quantile(caudatus$V8, 0.99)))
 
+
+  cruentus %>%
+    filter(V8>5.345e-05 
+) %>%
+    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/cruentus_sweeps")
+  
+  
+  caudatus %>%
+    filter(V8>4.111e-05) %>%
+    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/caudatus_sweeps")
+
+  hypochondriacus %>%
+    filter(V8>5.33828e-05) %>%
+      fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/hypochondriacus_sweeps")
 
   
+    hybridus %>%
+    filter(V8>2.269e-05 ) %>%
+      fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/hybridus_sweeps")
+    
+    
+    quitensis %>%
+      filter(V8>9.241e-05) %>%
+            fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/quitensis_sweeps")
 
 ```
 
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+When you save the notebook, an HTML file containing the code and processed will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the processed of the chunk when it was last run in the editor is displayed.
 

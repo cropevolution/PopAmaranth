@@ -20,7 +20,7 @@
 |cruentus   | 332584629
 |hypochondriacus  | 363428489   
 |hybridus   | 259369182
-|quitensis   |   347013541 
+|quitensis   |   347013541
 
 
 #### number of SNPs
