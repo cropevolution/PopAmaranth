@@ -48,6 +48,8 @@ covaraiants.all_samples<- fread('/Users/josedias/mount/projects/ag-stetter/jdias
 
 ```{r}
 #pcs calculation
+PCS<-prcomp(covaraiants)
+identification<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/acc_list/samples_aGDB')
 
 pcs_10<-as.data.frame(PCS$x[,1:10])
 pcs_10<-cbind(identification,pcs_10)
@@ -56,7 +58,7 @@ pcs_10<-cbind(identification,pcs_10)
 pcs_10$row_name=identification
 
 pcs_10 %>%
-  rename(SampleID=V1) 
+  rename(SampleID=row_name) 
 # fwrite("/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/all_species_PC10.txt", sep="\t")
 
 ```
@@ -91,12 +93,24 @@ pc1_3<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,3]))+
 
 pc1_3
 
+
+
 # side-by-side arranging
 pc_plots<-ggarrange(pc1_2  , pc1_3, legend="none")
 pc_plots
 ggsave("../figures/pca_plots_side.png", pc_plots,  dpi = 300,   device = "png", height = 4)
 
 # ggsave(grafico, filename = '/Users/josedias/Desktop/grafico_pca_filtered_samples.pdf' )
+
+
+# side-by-side arranging
+pc_plots<-plot_grid(pc1_2+ theme(legend.position="none"),
+          pc1_3 + theme(legend.position="none"),
+            labels = c("A", "B")
+)
+
+ggsave("../figures/pca_plots_side.png", pc_plots,  dpi = 300,   device = "png", height = 4)
+
 
 ```
 
@@ -120,8 +134,9 @@ list.filtered_samples<-fread('/Users/josedias/mount/projects/ag-stetter/jdias/da
 
 
  list.filtered_samples<-tibble::rowid_to_column(list.filtered_samples, "ID")
-
-
+especies<- 
+  list.filtered_samples %>%
+inner_join(list.samples, by='name')
 
 list.excluded_samples<-list.samples %>%
   anti_join(list.filtered_samples, by="name")
@@ -150,11 +165,11 @@ alfas<-list.samples %>%
 PCS.all_samples<-prcomp(covaraiants.all_samples)
 pcs_10.all_samples<-as.data.frame(PCS.all_samples$x[,1:10])
 pcs_10.all_samples<-cbind(identification,pcs_10)
-
+all_species<-list.samples$Taxonomy
 
 
 pc1_2.all_samples<- ggplot(PCS.all_samples, aes(PCS.all_samples$x[,1],PCS.all_samples$x[,2]))+
-    geom_point(aes(color=especies),  shape = formas, size = 3 , alpha = alfas) +
+    geom_point(aes(color=all_species),  shape = formas, size = 3 , alpha = alfas) +
   xlab("PC 1 (64.69%)") +
   ylab("PC 2 (29.67%)") +
   nice_layout +
@@ -167,9 +182,9 @@ pc1_2.all_samples<- ggplot(PCS.all_samples, aes(PCS.all_samples$x[,1],PCS.all_sa
 pc1_2.all_samples
 
 
-
+1
 pc1_3.all_samples<- ggplot(PCS.all_samples, aes(PCS.all_samples$x[,1],PCS.all_samples$x[,3]))+
-    geom_point(aes(color=especies),  shape = formas, size = 3 , alpha = 0.55) +
+    geom_point(aes(color=all_species),  shape = formas, size = 3 , alpha = 0.55) +
   xlab("PC 1 (64.69%)") +
   ylab("PC 3 (1.71%)") +
   nice_layout +
@@ -189,6 +204,22 @@ ggsave("../figures/pca_plots_all_samples.png", pc_plots.all_samples,  dpi = 300,
 
 
 ```
+```{r}
+pc_plots.all_samples<-plot_grid(pc1_2.all_samples+ theme(legend.position="none"),
+          pc1_3.all_samples + theme(legend.position="none"),
+            labels = c("A", "B")
+) +
+  theme_cowplot(12) +
+theme(axis.title = element_blank()) + 
+        theme(axis.title = element_blank()) 
+        #   theme(element_text(colour="white")) + 
+        # theme(element_line(colour="white"))
+
+ggsave("../figures/pca_plots_all_samples.png", pc_plots.all_samples,  dpi = 300,   device = "png", height = 4)
+
+```
+
+
 ```{r}
 ## calculate explained variance
 mx_transformed <- PCS.all_samples$x
