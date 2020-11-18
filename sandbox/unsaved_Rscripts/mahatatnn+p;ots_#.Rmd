@@ -1,0 +1,183 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+  caudatus_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/caudatus/RAiSD_Report_caudatus')
+
+
+cruentus_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/cruentus/RAiSD_Report_cruentus')
+
+hypochondriacus_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hypochondriacus/RAiSD_Report_hypochondriacus')
+
+
+hybridus<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hybridus/RAiSD_Report_hybridus')
+
+quintensis <- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/quintesis/RAiSD_Report_quitensis')
+
+```
+
+```{r}
+library(qqman)
+caudatus_sel %>%
+  filter(V1=="Scaffold_9") %>%
+  mutate(CHR=9) %>%
+
+  caudatus_sel
+  
+ggplot(geom_point(caudatus_sel)) +
+  geom_point(
+
+0.1 percententage of values
+
+add the adittionl points 
+  
+manhattan(chr="CHR",  bp="V2", snp="V3", p="V8" )
+
+
+
+
+```
+
+```{r}
+  caudatus_scaffold_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/caudatus/Scaffolds_RAiSD_Report_caudatus')  %>%
+  rename(CHR=V1, locus=V2, likelihood=V8)
+
+```
+
+
+```{r}
+  cruentus_scaffold_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/cruentus//Scaffolds_RAiSD_Report_cruentus') %>%
+  rename(CHR=V1, locus=V2, likelihood=V8)
+
+
+  
+```
+
+
+
+```{r}
+hypochondriacus_scaffold_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hypochondriacus/Scaffolds_RAiSD_Report_hypochondriacus') %>%
+  rename(CHR=V1, locus=V2, likelihood=V8)
+
+
+```
+
+
+
+
+```{r}
+hybridus_scaffold_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hybridus/Scaffolds_RAiSD_Report_hybridus') %>%
+  rename(CHR=V1, locus=V2, likelihood=V8)
+
+```
+
+
+```{r}
+quitensis_scaffold_sel<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/quitensis/Scaffolds_RAiSD_Report_quitensis') %>%
+  rename(CHR=V1, locus=V2, likelihood=V8)
+
+
+```
+
+
+
+```{r}
+
+cut_caudatus <- quantile(caudatus_scaffold_sel$likelihood, 0.999)
+
+
+caudatus_scaffold_sel %>%
+ggplot (aes(x=locus, y =likelihood, color = ifelse( likelihood < cut_caudatus, "Fail", "Pass"))) +
+  geom_point() + 
+  facet_grid(.~ CHR,space = 'free_x',scales='free_x') +
+  geom_hline(data=data.frame(yint=cut_caudatus),aes(yintercept =yint,linetype ='dashed',color=alpha('red',0.6))) +
+    scale_color_manual(name="QC", values = c("red", "grey", "black")) +
+  theme(panel.spacing.x=unit(0.25, "lines")) +
+    # scale_color_manual(values =wes_palette("Darjeeling1",17, type = "continuous"))+
+  theme( strip.background = element_rect(fill = alpha('lightblue',0.2)),strip.text = element_text(size=18)) +
+  theme(legend.position="none",axis.text.y = element_text(size=18),axis.title = element_text(size=22))
+  
+
+cut_cruentus <- quantile(cruentus_scaffold_sel$likelihood, 0.999)
+
+cruentus_scaffold_sel %>%
+ggplot (aes(x=locus, y =likelihood, color = ifelse( likelihood < cut_cruentus, "Fail", "Pass"))) +
+  geom_point() + 
+  facet_grid(.~ CHR,space = 'free_x',scales='free_x') +
+  geom_hline(data=data.frame(yint=cut_cruentus),aes(yintercept =yint,linetype ='dashed',color=alpha('red',0.6))) +
+    scale_color_manual(name="QC", values = c("red", "grey", "black")) +
+  theme(panel.spacing.x=unit(0.25, "lines")) +
+    # scale_color_manual(values =wes_palette("Darjeeling1",17, type = "continuous")) +
+  theme( strip.background = element_rect(fill = alpha('lightblue',0.2)),strip.text = element_text(size=18)) +
+  theme(legend.position="none",axis.text.y = element_text(size=18),axis.title = element_text(size=22))
+
+    # stat_summary_bin(aes(x=V2,y=V8),
+    #     bins=10,fun.y='mean',geom='point',col='red')
+
+
+```
+
+```{r}
+
+cut_quitensis <- quantile(quitensis_scaffold_sel$likelihood, 0.999)
+
+quitensis_scaffold_sel %>%
+ggplot (aes(x=locus, y =likelihood, color = ifelse( likelihood < cut_quitensis, "Fail", "Pass"))) +
+  geom_point() + 
+  facet_grid(.~ CHR,space = 'free_x',scales='free_x') +
+  geom_hline(data=data.frame(yint=cut_quitensis),aes(yintercept =yint,linetype ='dashed',color=alpha('red',0.6))) +
+    scale_color_manual(name="QC", values = c("red", "grey", "black")) +
+  theme(panel.spacing.x=unit(0.25, "lines")) +
+    # scale_color_manual(values =wes_palette("Darjeeling1",17, type = "continuous")) +
+  theme( strip.background = element_rect(fill = alpha('lightblue',0.2)),strip.text = element_text(size=18)) +
+  theme(legend.position="none",axis.text.y = element_text(size=18),axis.title = element_text(size=22))
+
+
+```
+
+
+```{r}
+
+
+cut_hypochondriacus <- quantile(hypochondriacus_scaffold_sel$V8, 0.999)
+
+
+hypochondriacus_scaffold_sel %>%
+ggplot (aes(x=locus, y =likelihood, color = ifelse( likelihood < cut_hypochondriacus, "Fail", "Pass"))) +
+  geom_point() + 
+  facet_grid(.~ CHR,space = 'free_x',scales='free_x') +
+  geom_hline(data=data.frame(yint=cut_hypochondriacus),aes(yintercept =yint,linetype ='dashed',color=alpha('red',0.6))) +
+    scale_color_manual(name="QC", values = c("red", "grey", "black")) +
+  theme(panel.spacing.x=unit(0.25, "lines")) +
+    # scale_color_manual(values =wes_palette("Darjeeling1",17, type = "continuous")) +
+  theme( strip.background = element_rect(fill = alpha('lightblue',0.2)),strip.text = element_text(size=18)) +
+  theme(legend.position="none",axis.text.y = element_text(size=18),axis.title = element_text(size=22))
+  
+```
+
+
+```{r}
+
+
+cut_hybridus <- quantile(hybridus_scaffold_sel$likelihood, 0.999)
+
+
+hybridus_scaffold_sel %>%
+ggplot (aes(x=locus, y =likelihood, color = ifelse( likelihood < cut_hybridus, "Fail", "Pass"))) +
+  geom_point() + w
+  facet_grid(.~ CHR,space = 'free_x',scales='free_x') +
+  geom_hline(data=data.frame(yint=cut_hybridus),aes(yintercept =yint,linetype ='dashed',color=alpha('red',0.6))) +
+    scale_color_manual(name="QC", values = c("red", "grey", "black")) +
+  theme(panel.spacing.x=unit(0.25, "lines")) +
+    # scale_color_manual(values =wes_palette("Darjeeling1",17, type = "continuous")) +
+  theme( strip.background = element_rect(fill = alpha('lightblue',0.2)),strip.text = element_text(size=18)) +
+  theme(legend.position="none",axis.text.y = element_text(size=18),axis.title = element_text(size=22))
+  
+```
+
+```{r}
+caudatus_scaffold_sel
+```
+

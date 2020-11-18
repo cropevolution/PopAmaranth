@@ -1,0 +1,108 @@
+---
+title: "Comparison SFS plots"
+output: html_notebook
+---
+
+
+```{r, results="hide", echo =FALSE}
+library('cowplot')
+library(data.table)
+library(dplyr)
+library(ggplot2)
+
+
+nice_layout<-   theme_cowplot()+
+    panel_border(color = "grey85", size = 1, linetype = 1,
+  remove = FALSE, "black") 
+```
+
+```{r, results="hide", echo =FALSE, eval =FALSE}
+cruenuts_AF<-fread('/Users/josedias/mount/scratch/jgoncal1/outputs/cruentus_sites.gz') 
+
+
+cruentus <- cruenuts_AF %>%
+  mutate(mAF=case_when(unknownEM > 0.5 ~ 1-unknownEM,
+                      TRUE~ unknownEM))
+
+```
+
+
+n=24 
+`
+~/angsd/angsd -out step1_cruentus_ancRef \
+-bam /projects/ag-stetter/jdias/data/acc_list/list_cruentus.file.list \
+-doSaf 1 \
+-GL 2 \
+-doMaf 2 \
+-doMajorMinor 5 \
+-P 24 \
+-anc /projects/ag-stetter/jdias/data/genomes/Ahypochondriacus_459_v2.0.fa \
+-remove_bads 1 \
+-minMapQ 30 \
+-minQ 20 \
+-minInd 7 \
+-SNP_pval 1e-6 \
+-skipTriallelic	1
+`
+
+
+
+` ~/angsd/misc/realSFS step1.saf.idx  -P 4 -fold 1 > folded.sfs
+`
+
+I understand the reasoning on the realSFS when invariant sites are present. The first and last "blocks" will represent non variant and fixed sites. And then when folded, this will fall on the first estimate and should be removed before plotting. But since the applied filters will output only invariant sites and angsd realSFS does not take it in consideration, this means that angsd realSFS calculates the wrong number of estimates for the SFS (25).
+
+
+#### Folded SFS plot generated from angsd , using the maximum likelihood estimate of the SFS using the realSFS (step1 on the Thetas,Tajima,Neutrality tests section)
+
+
+```{r}
+sfs_cruentus<- scan('/Users/josedias/mount/scratch/jgoncal1/outputs/cruentus_fodled.sfs')
+# sfs_cruentus<- sfs_cruentus[-c(1,length(sfs_cruentus))]
+ barplot(sfs_cruentus, names=1:length(sfs_cruentus), main = 'sfs_cruentus')
+
+
+```
+
+ 
+#### Folded SFS plot generated from minor allele frequencies (23 bins)
+
+```{r}
+ggplot(cruentus, aes(mAF))+
+geom_histogram(bins=23, color='white')+ 
+ggtitle("cruentus_SFS") +
+xlab("Minor allele frequency")  +
+nice_layout
+```
+
+
+Folded SFS plot generated from minor allele frequencies > 1/24 (23 bins)
+
+```{r}
+cruentus %>%
+filter(mAF>1/24) %>%
+ggplot(aes(mAF))+
+geom_histogram(bins=23, color='white')+ 
+ggtitle("cruentus_SFS, maf >1/24") +
+xlab("Minor allele frequency")  +
+nice_layout
+```
+
+
+
+### Total number of sites:
+angsd_realSFS: 8381923 <br>
+allele frequency estimate: 8382293 <br>
+allele frequency estimate (maf >1/24): 6659377 <br>
+
+
+
+
+
+```{r}
+saf2_sfs_cruentus<- scan('/Users/josedias/mount/scratch/jgoncal1/outputs/cruentus_d')
+# sfs_cruentus<- sfs_cruentus[-c(1,length(sfs_cruentus))]
+ barplot(saf2_sfs_cruentus, names=1:length(sfs_cruentus), main = 'sfs_cruentus')
+
+
+```

@@ -1,0 +1,71 @@
+---
+title: "PCA preparation"
+output: html_notebook
+---
+
+
+
+### Get genotype likelihoos in beagle format
+```{bash}
+~/angsd/angsd \
+-bam all_samples.file.list \
+-GL 2 \
+-out data \
+-nThreads 12 \
+-doGlf 2 \
+-doMajorMinor 1 \
+-doMaf 2 \
+-SNP_pval 1e-6 \
+-minMapQ 30 \
+-minQ 20
+```
+
+
+### Covnert beagle format into the covariuant matrix for R plotting
+
+```{bash}
+python /home/jgoncal1/pcangsd/pcangsd.py 
+-beagle raw_all_samples_forPCA.beagle.gz \
+-o raw_covariants \
+-threads 10
+
+```
+
+
+##### packages and necessary libraries
+```{r}
+library(data.table)
+library(RcppCNPy)
+library("factoextra")
+library('ggfortify')
+library('cowplot')
+nice_layout<-   theme_cowplot()+
+    panel_border(color = "grey85", size = 1, linetype = 1,
+  remove = FALSE, "black") 
+```
+
+
+
+### Plot PCA
+
+```{r}
+covaraiants<- fread('/Users/josedias/mount/scratch/jgoncal1/outputs/200.beagle.gz')
+
+covaraiants<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/covariantes_data.cov')
+
+
+species<-c(rep('caudatus', 28), rep('cruentus', 21), rep('hypochondriacus', 18), rep('hybridus_CA', 5), rep('hybridus_SA', 4), rep('quitensis', 12))
+
+
+grafico<- autoplot(prcomp(covaraiants)) +
+  geom_point(aes(color=factor(species))) +
+  nice_layout
+
+grafico
+
+
+
+# ggsave(grafico, filename = '/Users/josedias/Desktop/grafico_pca_all_samples.pdf' )
+
+```
+

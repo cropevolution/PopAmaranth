@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+
+library(data.table)
+library(RcppCNPy)
+library("factoextra")
+library('ggfortify')
+library('cowplot')
+library('dplyr')
+library(ggpubr)
+library('patchwork')
+library(wesanderson)
+library(ggsci)
+
+nice_layout<-   theme_cowplot()+
+    panel_border(color = "grey85", size = 1, linetype = 1,
+  remove = FALSE, "black") 
+
+
+library('ggfortify')
+
+
+covariantes<- fread('/Users/josedias/mount/scratch/jgoncal1/outputs/valores_pca_116.cov')
+
+PCS<-prcomp(covariantes)
+
+
+Species<-c(rep('A. caudatus', 28), rep('A. cruentus', 21), rep('A. hybridus', 9),  rep('A. hypochondriacus', 18), rep('A. quitensis', 12))
+
+
+
+
+PCS$rotation[,2]
+
+identification<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/sampleID_AmaranthGDB', header = F)
+
+grafico<- autoplot(prcomp(covariantes)) +
+  geom_point(aes()) +
+  nice_layout 
+  # scale_color_manual(values=ggsc(n=3, name="Darjeeling"))
+# scale_fill_discrete(name = "Species", labels = species)
+grafico
+
+ggsave("/Users/josedias/Desktop/sup_pca.png", grafico,  dpi = 300,   device = "png", height = 4)
+
+
+
+
+
+pc1_2<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,2]))+
+    geom_point(aes(color=Species),  shape = 19, size = 3 , alpha = 0.55) +
+  xlab("PC 1 (65.16%)") +
+  ylab("PC 2 (28.82%)") +
+  nice_layout +
+  # theme(legend.title = element_text(size = 15),
+  #       legend.text = element_text(size = 15))+
+    scale_color_locuszoom() +
+    scale_fill_locuszoom()
+
+pc1_2
+pc2_3<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,3]))+
+      geom_point(aes(color=Species), shape = 19, size = 3, , alpha = 0.55)  +
+  xlab("PC 1 (65.16%)") +
+  ylab("PC 3 (1.62%)") +
+  nice_layout +
+    scale_color_locuszoom() +
+    scale_fill_locuszoom()
+
+
+pc2_3
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+

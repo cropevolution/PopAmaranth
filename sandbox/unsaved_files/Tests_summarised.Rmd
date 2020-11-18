@@ -1,0 +1,294 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library('cowplot')
+library('ggplot2')
+library('data.table')
+library('dplyr')
+require(gridExtra)
+
+
+nice_layout<-   theme_cowplot()+
+    panel_border(color = "grey85", size = 1, linetype = 1,
+  remove = FALSE, "black") 
+
+
+
+```
+
+
+
+```{r}
+
+
+
+
+
+sfs_caudatus<- scan('/Users/josedias/mount/projects/scratch/jgd/outputs/caudatus_minimized.sfs')
+
+sfs_caudatus<- sfs_caudatus[-c(1,length(sfs_caudatus))]
+sfs_caudatus<-sfs_caudatus/sum(sfs_caudatus)
+barplot(sfs_caudatus, names=1:length(sfs_caudatus), main = 'sfs_caudatus')
+
+
+sfs_hybridus<- scan('/Users/josedias/mount/projects/scratch/jgd/outputs/hybridus_minimized.sfs')
+
+sfs_hybridus<- sfs_hybridus[-c(1,length(sfs_hybridus))]
+sfs_hybridus<-sfs_hybridus/sum(sfs_hybridus)
+barplot(sfs_hybridus, names=1:length(sfs_hybridus), main = 'sfs_hybridus')
+
+
+sfs_cruentus<- scan('/Users/josedias/mount/projects/scratch/jgd/outputs/step1b_cruentus_minimized.sfs')
+sfs_cruentus<- sfs_cruentus[-c(1,length(sfs_cruentus))]
+sfs_cruentus<-sfs_cruentus/sum(sfs_cruentus)
+barplot(sfs_cruentus, names=1:length(sfs_cruentus), main = 'sfs_cruentus')
+
+
+sfs_hypochondriacus<- scan('/Users/josedias/mount/projects/scratch/jgd/outputs/hypochondriacus_minimized_16.sfs')
+sfs_hypochondriacus<- sfs_hypochondriacus[-c(1,length(sfs_hypochondriacus))]
+sfs_hypochondriacus<-sfs_hypochondriacus/sum(sfs_hypochondriacus)
+barplot(sfs_hypochondriacus, names=1:length(sfs_hypochondriacus), main = 'sfs_hypochondriacus (16)')
+
+
+sfs_quitensis<- scan('/Users/josedias/mount/projects/scratch/jgd/outputs/quitensis_minimized.sfs')
+sfs_quitensis<- sfs_quitensis[-c(1,length(sfs_quitensis))]
+sfs_quitensis<-sfs_quitensis/sum(sfs_quitensis)
+barplot(sfs_quitensis, names=1:length(sfs_quitensis), main = 'sfs_quitensis')
+
+
+
+
+```
+
+
+#### Data load
+
+
+```{r}
+caudatus_tests<-fread('/Users/josedias/mount/projects/scratch/jgd/outputs/caudatus_tests_minimized.bedgraph') %>%
+          dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
+  mutate(Watterson=tW/nSites, pi=tP/nSites, TajimaPerSite=Tajima/nSites, species = "caudatus")
+  
+
+cruentus_tests<-fread('/Users/josedias/mount/projects/scratch/jgd/outputs/cruentus_tests_minimized.bedgraph')  %>%
+          dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
+  mutate(Watterson=tW/nSites, pi=tP/nSites, TajimaPerSite=Tajima/nSites, species = "cruentus")
+
+hybridus_tests<-fread('/Users/josedias/mount/projects/scratch/jgd/outputs/hybridus_tests_minimized.bedgraph') %>%
+          dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
+  mutate(Watterson=tW/nSites, pi=tP/nSites, TajimaPerSite=Tajima/nSites, species="hybridus")
+
+hypochondriacus_tests<-fread('/Users/josedias/mount/projects/scratch/jgd/outputs/hypochondriacus_tests_minimized.bedgraph') %>%
+          dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
+  mutate(Watterson=tW/nSites, pi=tP/nSites, TajimaPerSite=Tajima/nSites, species="hypochondriacus")
+
+quitensis_tests<-fread('/Users/josedias/mount/projects/scratch/jgd/outputs/quitensis_tests_minimized.bedgraph') %>%
+          dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
+  mutate(Watterson=tW/nSites, pi=tP/nSites, TajimaPerSite=Tajima/nSites, species="quitensis")
+  
+
+
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+
+
+all_species <- full_join(caudatus_tests, cruentus_tests) %>%
+  full_join(quitensis_tests) %>%
+  full_join(hybridus_tests) %>%
+  full_join(hypochondriacus_tests) %>%
+    full_join(quitensis_tests)
+
+
+
+
+all_species.filtered <- full_join(caudatus_tests, cruentus_tests) %>%
+  full_join(quitensis_tests) %>%
+  full_join(hybridus_tests) %>%
+  full_join(hypochondriacus_tests) %>%
+  full_join(quitensis_tests) %>%
+    filter(nSites>2000)
+
+
+
+all_species %>%
+    group_by(species) %>%
+summarise_if(is.numeric, mean)
+
+
+all_species.filtered%>%
+    group_by(species) %>%
+summarise_if(is.numeric, mean)
+
+
+
+        plot_tPS_all_species<-ggplot(all_species, aes(x=TajimaPerSite)) +
+          geom_density(aes(color = species, fill=species), alpha=0.4) +
+          nice_layout +
+          labs(title = "Tajima per Site")
+
+              plot_Tajima_all_species<-            ggplot(all_species, aes(x=Tajima)) +
+          geom_density(aes(color = species, fill=species), alpha=0.4) +
+          nice_layout +
+                       labs(title = "Tajima")
+                  
+                  
+                         plot_pi_all_species<- ggplot(all_species, aes(x=pi)) +
+          geom_density(aes(color = species, fill=species), alpha=0.4) +
+          nice_layout +
+                    labs(title = "pi")
+
+                       plot_tP_species<-ggplot(all_species, aes(x=tP)) +
+          geom_density(aes(color = species, fill=species), alpha=0.4) +
+          nice_layout +
+                    labs(title = "tP")
+
+                plot_tW_all_species<- ggplot(all_species, aes(x=tW)) +
+          geom_density(aes(color = species, fill=species), alpha=0.4) +
+          nice_layout +
+                    labs(title = "tW")
+
+                               
+                         plot_Watterson_all_species<-     ggplot(all_species, aes(x=Watterson)) +
+          geom_density(aes(color = species, fill=species), alpha=0.4) +
+          nice_layout           +
+                       labs(title = "Watterson")
+                       
+                     
+                       
+title <- ggdraw() + 
+  draw_label(
+    "All species without filter",
+    fontface = 'bold',
+    x = 0,
+    hjust = 0
+  ) 
+
+    plot_grid( plot_tPS_all_species, plot_pi_all_species, plot_Watterson_all_species, plot_Tajima_all_species,  plot_tP_species, plot_tW_all_species, labels="AUTO", title)
+
+    
+    
+    
+    
+
+
+plot_tPS_all_species_filtered<-ggplot(all_species.filtered, aes(x=TajimaPerSite)) +
+geom_density(aes(color = species, fill=species), alpha=0.4) +
+nice_layout +
+labs(title = "Tajima per Site")
+
+  plot_Tajima_all_species_filtered<-            ggplot(all_species.filtered, aes(x=Tajima)) +
+geom_density(aes(color = species, fill=species), alpha=0.4) +
+nice_layout +
+           labs(title = "Tajima")
+      
+      
+             plot_pi_all_species_filtered<- ggplot(all_species.filtered, aes(x=pi)) +
+geom_density(aes(color = species, fill=species), alpha=0.4) +
+nice_layout +
+        labs(title = "pi")
+
+           plot_tP_species_filtered<-ggplot(all_species.filtered, aes(x=tP)) +
+geom_density(aes(color = species, fill=species), alpha=0.4) +
+nice_layout +
+        labs(title = "tP")
+
+    plot_tW_all_species_filtered<- ggplot(all_species.filtered, aes(x=tW)) +
+geom_density(aes(color = species, fill=species), alpha=0.4) +
+nice_layout +
+        labs(title = "tW")
+
+                   
+             plot_Watterson_all_species_filtered<-     ggplot(all_species.filtered, aes(x=Watterson)) +
+geom_density(aes(color = species, fill=species), alpha=0.4) +
+nice_layout      +     
+           labs(title = "Watterson")
+           
+         
+           
+title.filtered <- ggdraw() + 
+draw_label(
+"All species nsites >2000",
+fontface = 'bold',
+x = 0,
+hjust = 0
+) 
+
+plot_grid(plot_tPS_all_species_filtered , plot_pi_all_species_filtered, plot_Watterson_all_species_filtered, plot_Tajima_all_species_filtered, plot_tP_species_filtered, plot_tW_all_species_filtered, labels="AUTO", title.filtered)
+
+
+
+  
+    
+```
+
+```{r}
+
+
+caudatus_tests %>%
+  select(CHR, StartPos, EndPos, Watterson) %>%
+fwrite('caudatus_watterson', sep='\t', quote = FALSE)
+
+
+
+quitensis_tests %>%
+  select(CHR, StartPos, EndPos, Watterson) %>%
+fwrite('quitensis_watterson', sep='\t', quote = FALSE)
+
+
+cruentus_tests %>%
+  select(CHR, StartPos, EndPos, Watterson) %>%
+fwrite('cruentus_watterson', sep='\t', quote = FALSE)
+
+
+hybridus_tests %>%
+  select(CHR, StartPos, EndPos, Watterson) %>%
+fwrite('hybridus_watterson', sep='\t', quote = FALSE)
+
+
+hypochondriacus_tests %>%
+  select(CHR, StartPos, EndPos, Watterson) %>%
+fwrite('hypochondriacus_watterson', sep='\t', quote = FALSE)
+
+
+
+caudatus_tests %>%
+  select(CHR, StartPos, EndPos, pi) %>%
+fwrite('caudatus_pi', sep='\t', quote = FALSE)
+
+
+
+quitensis_tests %>%
+  select(CHR, StartPos, EndPos, pi) %>%
+fwrite('quitensis_pi', sep='\t', quote = FALSE)
+
+
+cruentus_tests %>%
+  select(CHR, StartPos, EndPos, pi) %>%
+fwrite('cruentus_pi', sep='\t', quote = FALSE)
+
+
+hybridus_tests %>%
+  select(CHR, StartPos, EndPos, pi) %>%
+fwrite('hybridus_pi', sep='\t', quote = FALSE)
+
+
+hypochondriacus_tests %>%
+  select(CHR, StartPos, EndPos, pi) %>%
+fwrite('hypochondriacus_pi', sep='\t', quote = FALSE)
+
+
+
+
+```
+

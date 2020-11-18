@@ -39,3 +39,53 @@
 #### beagle file (all samples)
 116 samples
 388751022 sites
+
+### FST values
+
+
+| species  | mean Fst Value |
+|---|---|
+| caudatus/cruentus | 0.681 |
+| caudatus/hybridus | 0.325 |
+| caudatus/hypochondriacus | 0.619 |
+| caudatus/quitensis | 0.172 |
+| cruentus/hybridus | 0.688 |
+| cruentus/hypochondriacus | 0.572 |
+| cruentus/quitensis | 0.730 |
+| hybridus/quitensis | 0.348 |
+| hypochondriacus/hybridus | 0.329 |
+| hypochondriacus/quitensis | 0.676 |
+
+
+
+# sweeps
+
+|  | average window size|
+|---|---|
+| caudatus   |  36055.6 |
+|  cruentus |  41195.1 |
+|  hypochondriacus |  42156.5 |
+| hybridus    |  30257.5 |
+| quitensis   |  41940.9 |
+
+
+0.5740122571295846
+
+# inbreeding coefficient
+
+|  | mean value|
+|---|---|
+| caudatus   |  0.574 |
+|  cruentus |  0.488 |
+|  hypochondriacus |  0.628 |
+| hybridus    |  0.677|
+| quitensis   |  0.189 |
+
+# Tajima's D
+|  | mean value|
+|---|---|
+| caudatus   |  1.443 |
+|  cruentus |  1.773 |
+|  hypochondriacus |  -0.105 |
+| hybridus    |  -0.597 |
+| quitensis   |  2.037 |
