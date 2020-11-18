@@ -4,11 +4,11 @@
 
 | species  | total sites detected  | sites>1% threshold  |  nr windows | cut-off |
 |---|---|---|---|---|
-|caudatus | 1765126  |   68235 |  973 | 4.111e-05
-|cruentus   | 1654914  | 42272  | 1096| 5.345e-05   
-|hypochondriacus  | 1793173  |  42364 | 1121 | 5.33828e-05
-|hybridus   | 4343653  |  170313 | 2452 |2.269e-05
-|quitensis   |   1585410 |   15854 | 1275 | 9.241e-05
+|caudatus | 1765126  |   17650 |  973 | 4.111e-05
+|cruentus   | 1654914  | 16546  | 1096| 5.345e-05   
+|hypochondriacus  | 1793173  |  17932 | 1121 | 5.33828e-05
+|hybridus   | 4343653  |  43415 | 2452 |2.269e-05
+|quitensis   |   1585410 |  15854 | 1275 | 9.241e-05
 
 
 
@@ -89,3 +89,22 @@
 |  hypochondriacus |  -0.105 |
 | hybridus    |  -0.597 |
 | quitensis   |  2.037 |
+
+# nucleotide diversity (π)
+|  | mean value|
+|---|---|
+| caudatus   |  0.009 |
+|  cruentus |  0.010 |
+|  hypochondriacus |  0.005 |
+| hybridus    |  0.019 |
+| quitensis   |  0.009 |
+
+#Wu and Watterson estimator (θ)
+
+|  | mean value|
+|---|---|
+| caudatus   |  0.007 |
+| cruentus |  0.007 |
+| hypochondriacus | 0.005|
+| hybridus    |  0.023|
+| quitensis   |  0.006 |
