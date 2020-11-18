@@ -13,11 +13,11 @@ library(ggplot2)
 
 nice_layout<-   theme_cowplot()+
     panel_border(color = "grey85", size = 1, linetype = 1,
-  remove = FALSE, "black") 
+  remove = FALSE, "black")
 ```
 
 ```{r, results="hide", echo =FALSE, eval =FALSE}
-cruenuts_AF<-fread('/Users/josedias/mount/scratch/jgoncal1/outputs/cruentus.mafs.gz') 
+cruenuts_AF<-fread('/Users/josedias/mount/scratch/jgoncal1/outputs/cruentus.mafs.gz')
 
 
 cruentus <- cruenuts_AF %>%
@@ -32,7 +32,7 @@ cruentus <- cruenuts_AF %>%
   caudatus_tests<-fread('/Users/josedias/mount/scratch/jgoncal1/outputs/caudatus_tests.bedgraph') %>%
           dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
   mutate(Watterson=tW/nSites, pi=tP/nSites, TajimaPerSite=Tajima/nSites, species = "caudatus")
-  
+
 
 cruentus_tests<-fread('/Users/josedias/mount/scratch/jgoncal1/outputs/crunetus_tests.bedgraph')  %>%
           dplyr::rename(CHR=V1, StartPos=V2, EndPos=V3, tW=V4, tP=V5, Tajima=V6, nSites=V7) %>%
@@ -69,34 +69,34 @@ summarise_if(is.numeric, mean)
 
 
 
-    
+
 
   plot_Tajima_all_species_filtered<-            ggplot(all_species.filtered, aes(x=Tajima)) +
 geom_density(aes(color = species, fill=species), alpha=0.4) +
 nice_layout +
            labs(title = "Tajima")
-      
-      
+
+
              plot_pi_all_species_filtered<- ggplot(all_species.filtered, aes(x=pi)) +
 geom_density(aes(color = species, fill=species), alpha=0.4) +
 nice_layout +
         labs(title = "pi")
 
-                   
+
              plot_Watterson_all_species_filtered<-     ggplot(all_species.filtered, aes(x=Watterson)) +
 geom_density(aes(color = species, fill=species), alpha=0.4) +
 nice_layout      +     
            labs(title = "Watterson")
-           
-         
-           
-title.filtered <- ggdraw() + 
+
+
+
+title.filtered <- ggdraw() +
 draw_label(
 "All species nsites >250",
 fontface = 'bold',
 x = 0,
 hjust = 0
-) 
+)
 
 plot_grid(plot_Tajima_all_species_filtered, plot_pi_all_species_filtered, plot_Watterson_all_species_filtered, labels="AUTO", title.filtered)
 
@@ -159,7 +159,7 @@ full_join(quitensis_tests, by = c("CHR", "StartPos", "EndPos")) %>%
 ratios<- full_join(ratio_cau_hyb, ratio_cru_hyb) %>%
   full_join(ratio_hyp_hyb) %>%
   full_join(ratio_cau_qui) %>%
-  full_join(ratio_qui_hyb) 
+  full_join(ratio_qui_hyb)
 ratios
 
 ratios %>%
@@ -173,5 +173,3 @@ fwrite("/Users/josedias/mount/scratch/jgoncal1/outputs/quitensis_WattersonTheta"
 
 
 ```
-
-

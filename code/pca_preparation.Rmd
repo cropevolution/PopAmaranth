@@ -24,7 +24,7 @@ output: html_notebook
 ### Covnert beagle format into the covariuant matrix for R plotting
 
 ```{bash}
-python /home/jgoncal1/pcangsd/pcangsd.py
+python /home/jgoncal1/pcangsd/pcangsd.py 
 -beagle raw_all_samples_forPCA.beagle.gz \
 -o raw_covariants \
 -threads 10
@@ -47,7 +47,7 @@ library(ggsci)
 
 nice_layout<-   theme_cowplot()+
     panel_border(color = "grey85", size = 1, linetype = 1,
-  remove = FALSE, "black")
+  remove = FALSE, "black") 
 
 # Stetter Lab colors
 #33A02C caudatus
@@ -75,14 +75,14 @@ species<-c(rep('caudatus', 28), rep('cruentus', 21), rep('hypochondriacus', 18),
 PCS<-prcomp(covaraiants)
 
 
-#Calculation of variance
-mx<-prcomp(covaraiants)
+## calculate explained variance
+mx<-prcomp(covaraiants) 
 vars <- apply(mx$x, 2, var)
 Variation<-(vars/sum(vars))*100
 varaibles<-Variation[1:10]
 
 
-#
+# 
 pc1_2<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,2]))+
     geom_point(aes(color=Species),  shape = 19, size = 3 , alpha = 0.55) +
   xlab("PC 1 (65.16%)") +
@@ -103,5 +103,16 @@ pc2_3<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,3]))+
   scale_color_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6'))
 
 
+# side-by-side arranging
+pc_plots<-plot_grid(pc1_2+ theme(legend.position="none"),
+          pc1_3 + theme(legend.position="none"),
+            labels = c("A", "B"), align="vh",
+          axis = "b"
+          # rows = 2
+          # rel_widths = c(1.01, 1)
+) 
+          
+
 
 ```
+

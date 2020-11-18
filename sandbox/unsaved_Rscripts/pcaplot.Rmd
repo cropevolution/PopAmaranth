@@ -18,53 +18,29 @@ library('patchwork')
 library(wesanderson)
 library(ggsci)
 
+```
+
+
+```{r}
+
 nice_layout<-   theme_cowplot()+
     panel_border(color = "grey85", size = 1, linetype = 1,
-  remove = FALSE, "black") 
-
-my_cols <- c('#33A02C','#1F78B4','#A6CEE3','#E31A1C','#FF7F00','#FDBF6F','#FB9A99','#B2DF8A','#CAB2D6')
+  remove = FALSE, "black")
 
 
-#33A02C caudatus
-#A6CEE3 cruentus
-#FF7F00 hybridus
-#FB9A99 hypochondriacus
-#CAB2D6 quitensis
 
-minhas_cores<-c(rep('#33A02C', 28), rep('#A6CEE3', 21), rep('#FF7F00', 9),  rep('#FB9A99', 18), rep('#CAB2D6', 12))
-
-
-# teste_selection <- npyLoad("/Users/josedias/mount/projects/scratch/jgd/outputs/fixed_GRE.selection.npy") 
-# 
-# teste_admix <- npyLoad("/Users/josedias/mount/projects/scratch/jgd/outputs/fixed_GRE.admix.Q.npy") 
-# 
-# teste_inbeed <- npyLoad("/Users/josedias/mount/projects/scratch/jgd/outputs/fixed_GRE.inbreed.npy") 
+# teste_selection <- npyLoad("/Users/josedias/mount/projects/scratch/jgd/outputs/fixed_GRE.selection.npy")
+#
+# teste_admix <- npyLoad("/Users/josedias/mount/projects/scratch/jgd/outputs/fixed_GRE.admix.Q.npy")
+#
+# teste_inbeed <- npyLoad("/Users/josedias/mount/projects/scratch/jgd/outputs/fixed_GRE.inbreed.npy")
 
 covaraiants<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/covariantes_data.cov')
 
 Species<-c(rep('A. caudatus', 28), rep('A. cruentus', 21), rep('A. hybridus', 9),  rep('A. hypochondriacus', 18), rep('A. quitensis', 12))
 
-# cores<-c(rep('blue', 18), rep('red', 28), rep('green', 12), rep('orange', 9))
-# 
-# 
-#   ev <- eigen(covaraiants)
-#   
-# experimentando_covaraiantes<-  cbind(species, covaraiants)  
-# ggplot(covaraiants, aes(x=V1, y=V2))+
-#   geom_point(aes(color=factor(species)))
-# 
-# plot(ev)
-# 
-# plot(covaraiants$V1, covaraiants$V2, )
-# 
-
-
-
 PCS<-prcomp(covaraiants)
-
-
 PCS$rotation[,2]
-
 identification<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/sampleID_AmaranthGDB', header = F)
 
 grafico<- autoplot(prcomp(covaraiants)) +
@@ -73,7 +49,6 @@ grafico<- autoplot(prcomp(covaraiants)) +
 #  scale_color_manual(values=ggsc(n=3, name="Darjeeling"))
  scale_fill_discrete(name = Species, labels = Species)
 grafico
-
 
 
 
@@ -111,11 +86,11 @@ ggsave("/Users/josedias/Desktop/pca_plots_side.png", pc_plots,  dpi = 300,   dev
 # ggsave(grafico, filename = '/Users/josedias/Desktop/grafico_pca_all_samples.pdf' )
 
 pcs_
-  
+
 combined<-  pc1_2 + pc2_3 + plot_layout(guides = "collect") & theme(legend.position = "bottom",   legend.key.size =2)
 
 
- mx<-prcomp(covaraiants) 
+ mx<-prcomp(covaraiants)
 vars <- apply(mx$x, 2, var)
 
 Variation<-(vars/sum(vars))*100
@@ -137,24 +112,6 @@ theme
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-
-```
-
-
-
 ```{r}
 
 library('ggfortify')
@@ -168,7 +125,7 @@ identification<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects
 
 grafico<- autoplot(prcomp(covaraiants)) +
   geom_point(aes(color=Species)) +
-  nice_layout 
+  nice_layout
 # scale_fill_discrete(name = "Species", labels = species)
 grafico
 
@@ -206,10 +163,10 @@ pcs_10<-cbind(identification,pcs_10)
 pcs_10$row_name=identification
 
 pcs_10 %>%
-  rename(SampleID=V1) 
+  rename(SampleID=V1)
 # fwrite("/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/all_species_PC10.txt", sep="\t")
 
-  
+
 combined<-  pc1_2 + pc2_3 + plot_layout(guides = "collect") & theme(legend.position = "bottom",   legend.key.size =2)
 
 

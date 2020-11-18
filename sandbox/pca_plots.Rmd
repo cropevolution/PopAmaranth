@@ -108,7 +108,6 @@ pc_plots<-plot_grid(pc1_2+ theme(legend.position="none"),
           pc1_3 + theme(legend.position="none"),
             labels = c("A", "B"), align="vh",
           axis = "b"
-          
           # rows = 2
           # rel_widths = c(1.01, 1)
 ) 
