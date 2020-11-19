@@ -1,5 +1,9 @@
 # Project Overview
 
+#### Gene annotation:
+
+200,797 total number of genes
+23,884 have annotation
 
 ### General summary statistics:
 
