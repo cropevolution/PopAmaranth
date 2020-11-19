@@ -43,7 +43,7 @@
 116 samples
 388751022 sites
 
-### FST values
+#### FST values
 
 
 | species  | mean Fst Value |
@@ -61,7 +61,7 @@
 
 
 
-# sweeps
+#### sweeps
 
 |  | average window size|
 |---|---|
@@ -74,7 +74,7 @@
 
 0.5740122571295846
 
-# inbreeding coefficient
+#### inbreeding coefficient
 
 |  | mean value|
 |---|---|
@@ -84,7 +84,7 @@
 | hybridus    |  0.677|
 | quitensis   |  0.189 |
 
-# Tajima's D
+#### Tajima's D
 |  | mean value|
 |---|---|
 | caudatus   |  1.443 |
@@ -93,7 +93,7 @@
 | hybridus    |  -0.597 |
 | quitensis   |  2.037 |
 
-# nucleotide diversity (π)
+#### nucleotide diversity (π)
 |  | mean value|
 |---|---|
 | caudatus   |  0.009 |
@@ -102,7 +102,7 @@
 | hybridus    |  0.019 |
 | quitensis   |  0.009 |
 
-#Wu and Watterson estimator (θ)
+#### Wu and Watterson estimator (θ)
 
 |  | mean value|
 |---|---|
