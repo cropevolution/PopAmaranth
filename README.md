@@ -41,12 +41,6 @@
 |quitensis   |   2342505
 
 
-
-
-#### beagle file (all samples)
-116 samples
-388751022 sites
-
 #### FST values
 
 
@@ -114,4 +108,9 @@
 | cruentus |  0.007 |
 | hypochondriacus | 0.005|
 | hybridus    |  0.023|
-| quitensis   |  0.006 |
+| quitensis   |  0.006 
+
+#### beagle file (all samples)
+116 samples
+388751022 sites
+
