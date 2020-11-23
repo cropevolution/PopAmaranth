@@ -1,4 +1,4 @@
-## Home
+``## Home
 WELCOME TO THE AMARANTHGDB!
 
 ## Amaranth genetics and genomics database
@@ -9,15 +9,15 @@ WELCOME TO THE AMARANTHGDB!
 
 
 
-
-#### Amaranth Description
 Amaranth is an under-utilized crop that has been cultivated for its grains as pseudo-cereal and for its edible leaves as a vegetable.
 In recent years, Amaranth regained importance because of its gluten-free nature, high nutritional value and good stress resilience
 Grain amaranth is a pseudo-cereal from the Americas that has been domesticated three times independently from a single ancestor, making it an ideal system to study repeated evolution.
-AmaranthGDB intends to provide useful resources and tools to interdisciplinary  amaranth research. We provide the first amaramth population genetics genome browser, **PopAmaranth** (link to PopAmaranth).
-PopAmaranth facilitates browsing nine different summary statistics on genetic variation and selection signals, gene annotation and variant calls of the three grain amaranths and two wild relatives along the amaranth genome.
 
-_PopAmaranth is published here(link)_
+AmaranthGDB intends to provide useful resources and tools to interdisciplinary  amaranth research. We provide the first amaranth population genetics genome browser, **PopAmaranth** (link to PopAmaranth).
+
+PopAmaranth facilitates browsing through different summary statistics on genetic variation and selection signals, gene annotation and variant calls of the three grain amaranths and two wild relatives along the amaranth genome.
+
+*__PopAmaranth is published here(link)__*
 
 
 ### Resources/Tools
@@ -29,21 +29,20 @@ _PopAmaranth is published here(link)_
 [BLAST](Click image with link for BLAST search)
 
 
+
+
 ## Diversity
 
 
 
-##### Geographic sample  distribution
+#### Geographic sample  distribution
 
-#####  Principle component analysis of samples included
-First three Principal Components
 
-##### Recommended links
-Our latest research:
-[cropevolution.org/publications]
+####  Principle component analysis of samples included
+First three Principal Components Analysis of all samples.
 
-[GRIN]
-[Phytozome]
+## BLAST
+
 
 
 ## About
@@ -57,10 +56,25 @@ Here, we present PopAmaranth, a population genetic genome browser, which provide
 Cite PopAmaranth here: [LINK FOR THE SUPER AWESOME UPCOMING PUBLICATION]
 
 #### Contacts:
-The Stetter Lab is located at the University of Cologne, Germany
+The Stetter Lab is located at the Institute for Plant Sciences at the University of Cologne, Germany
 
 Lab Contacts
 
 Email
 
 Twitter
+
+
+
+##### Recommended links
+__Our latest research:__
+
+[cropevolution.org/publications]
+
+<br>
+
+[GRIN]
+
+[Phytozome]
+
+Insitute for Plant Sciences[https://botanik.uni-koeln.de/en/institute-for-plant-sciences]

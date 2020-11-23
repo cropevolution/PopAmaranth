@@ -5,11 +5,12 @@ processed: html_notebook
 
 
 ```{r}
-cruentus<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/cruentus/RAiSD_Report_cruentus")
 
 caudatus<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/caudatus/RAiSD_Report_caudatus")
 
-caudatus
+cruentus<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/cruentus/RAiSD_Report_cruentus")
+
+
 
 hypochondriacus<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hypochondriacus/RAiSD_Report_hypochondriacus")
 
@@ -18,20 +19,20 @@ hybridus<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/hyb
 
 quitensis<- fread("/Users/josedias/mount/projects/ag-stetter/jdias/data/raisd/quitensis/RAiSD_Report_quitensis")
 
-quantile(caudatus$V8, 0.99)
+quantile(quitensis$V8, 0.99)
 quitensis %>%
-  filter(V8>(quantile(caudatus$V8, 0.99)))
+  filter(V8>(quantile(quitensis$V8, 0.99)))
 
+
+  caudatus %>%
+    filter(V8>4.111e-05) %>%
+    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/caudatus_sweeps", sep ='\t')
 
   cruentus %>%
     filter(V8>5.345e-05 
 ) %>%
     fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/cruentus_sweeps", sep ='\t')
   
-  
-  caudatus %>%
-    filter(V8>4.111e-05) %>%
-    fwrite("/Users/josedias/Documents/PhD_Cologne/projects/PopAmaranth/data/processed/caudatus_sweeps", sep ='\t')
 
   hypochondriacus %>%
     filter(V8>5.33828e-05) %>%
