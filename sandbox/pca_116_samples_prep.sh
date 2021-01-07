@@ -11,4 +11,14 @@
 source /home/jgoncal1/.bashrc
 module load gnu/4.8.2
 
-~/angsd/angsd -GL 2 -out pca_116 -nThreads 24 -doGlf 2 -doMajorMinor 1 -doMaf 2 -SNP_pval 1e-6 -bam /projects/ag-stetter/jdias/data/acc_list/list_116.file.list
+OUTPUT_FILE='pca_116'
+BAM_LIST="/projects/ag-stetter/jdias/data/acc_list/list_116.file.list"
+
+
+~/angsd/angsd -GL 2 -out $OUTPUT_FILE \
+-nThreads 24\
+-doGlf 2 \
+-doMajorMinor 1 \
+-doMaf 2 \
+-SNP_pval 1e-6 \
+-bam $BAM_LIST

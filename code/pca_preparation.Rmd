@@ -21,7 +21,7 @@ output: html_notebook
 ```
 
 
-### Covnert beagle format into the covariuant matrix for R plotting
+### Convert beagle format into the covariant matrix for R plotting
 
 ```{bash}
 python /home/jgoncal1/pcangsd/pcangsd.py 
@@ -68,7 +68,7 @@ minhas_cores<-c(rep('#33A02C', 28), rep('#A6CEE3', 21), rep('#FF7F00', 9),  rep(
 ### load covaraiant file generated from the beagle file
 covaraiants<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/covariantes_data.cov')
 
-
+### Species groups
 species<-c(rep('caudatus', 28), rep('cruentus', 21), rep('hypochondriacus', 18), rep('hybridus_CA', 5), rep('hybridus_SA', 4), rep('quitensis', 12))
 
 #Calulation of principal components
@@ -82,7 +82,7 @@ Variation<-(vars/sum(vars))*100
 varaibles<-Variation[1:10]
 
 
-# 
+#### PCA plotting 
 pc1_2<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,2]))+
     geom_point(aes(color=Species),  shape = 19, size = 3 , alpha = 0.55) +
   xlab("PC 1 (65.16%)") +

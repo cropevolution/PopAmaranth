@@ -1,0 +1,268 @@
+---
+title: "PCA figures for PopAmmaranth"
+output: html_notebook
+---
+
+
+```{r echo=FALSE}
+
+#### Packages
+
+library(data.table)
+library(RcppCNPy)
+library("factoextra")
+library('ggfortify')
+library('cowplot')
+library('dplyr')
+library(ggpubr)
+library('patchwork')
+library(wesanderson)
+library(ggsci)
+
+nice_layout<-   theme_cowplot()+
+    panel_border(color = "grey85", size = 1, linetype = 1,
+  remove = FALSE, "black") 
+
+my_cols <- c('#33A02C','#1F78B4','#A6CEE3','#E31A1C','#FF7F00','#FDBF6F','#FB9A99','#B2DF8A','#CAB2D6')
+
+
+
+#33A02C caudatus
+#A6CEE3 cruentus
+#FF7F00 hybridus
+#FB9A99 hypochondriacus
+#CAB2D6 quitensis
+```
+
+
+```{r}
+### Data loading
+
+covaraiants<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/covariantes_data.cov')
+
+
+covaraiants.all_samples<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/data/valores_pca_116.cov')
+
+```
+
+
+```{r}
+#pcs calculation
+PCS<-prcomp(covaraiants)
+identification<- fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/acc_list/samples_aGDB')
+
+pcs_10<-as.data.frame(PCS$x[,1:10])
+pcs_10<-cbind(identification,pcs_10)
+
+
+pcs_10$row_name=identification
+
+pcs_10 %>%
+  rename(SampleID=row_name) 
+# fwrite("/Users/josedias/mount/projects/ag-stetter/jdias/projects/Genome_browser/all_species_PC10.txt", sep="\t")
+
+```
+
+
+```{r}
+
+Species<-c(rep('A. caudatus', 28), rep('A. cruentus', 21), rep('A. hybridus', 9),  rep('A. hypochondriacus', 18), rep('A. quitensis', 12))
+
+PCS<-prcomp(covaraiants)
+
+pc1_2<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,2]))+
+    geom_point(aes(color=Species),  shape = 19, size = 3 , alpha = 0.55) +
+  xlab("PC 1 (65.16%)") +
+  ylab("PC 2 (28.82%)") +
+  nice_layout +
+  # theme(legend.title = element_text(size = 15),
+  #       legend.text = element_text(size = 15))
+  scale_fill_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6')) +
+  scale_color_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6'))
+
+pc1_2
+
+
+pc1_3<- ggplot(PCS, aes(PCS$x[,1],PCS$x[,3]))+
+    geom_point(aes(color=Species),  shape = 19, size = 3 , alpha = 0.55) +
+  xlab("PC 1 (65.16%)") +
+  ylab("PC 3 (1.62%)") +
+  nice_layout +
+  scale_fill_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6')) +
+  scale_color_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6'))
+
+pc1_3
+
+
+# 
+# # side-by-side arranging
+# pc_plots<-ggarrange(pc1_2  , pc1_3, legend="none")
+# pc_plots
+# ggsave("../figures/pca_plots_side.png", pc_plots,  dpi = 300,   device = "png", height = 4)
+
+# ggsave(grafico, filename = '/Users/josedias/Desktop/grafico_pca_filtered_samples.pdf' )
+
+
+# side-by-side arranging
+pc_plots<-plot_grid(pc1_2+ theme(legend.position="none"),
+          pc1_3 + theme(legend.position="none"),
+            labels = c("A", "B"), align="vh",
+          axis = "b"
+          # rows = 2
+          # rel_widths = c(1.01, 1)
+) 
+  
+
+  theme_cowplot(12) 
+
+pc_plots
+theme(axis.title = element_blank()) + 
+        theme(axis.title = element_blank()) +
+  theme(axis.line=element_blank(),axis.text.x=element_blank(),
+          axis.text.y=element_blank(),axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),legend.position="none",
+          panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),plot.background=element_blank())
+        #   theme(element_text(colour="white")) + 
+        # theme(element_line(colour="white"))
+
+ggsave("../figures/pca_plots_side.png", pc_plots,  dpi = 300,   device = "png", height = 4)
+
+
+```
+
+
+
+
+```{r}
+list.all.samples<-fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/acc_list/list_amaranth_aswgrs')
+
+
+list.samples<-fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/acc_list/116_sampples')
+
+
+list.samples<-list.samples %>%
+  inner_join(list.all.samples, by="name")
+
+list.samples <- tibble::rowid_to_column(list.samples, "ID")
+
+
+list.filtered_samples<-fread('/Users/josedias/mount/projects/ag-stetter/jdias/data/acc_list/samples_aGDB') 
+
+
+ list.filtered_samples<-tibble::rowid_to_column(list.filtered_samples, "ID")
+especies<- 
+  list.filtered_samples %>%
+inner_join(list.samples, by='name')
+
+list.excluded_samples<-list.samples %>%
+  anti_join(list.filtered_samples, by="name")
+
+formas<-list.samples %>% 
+  left_join(list.excluded_samples, by = "name") %>%
+ mutate(present=case_when(Taxonomy.x == Taxonomy.y ~ 
+                           4,
+           TRUE ~ 19)) %>%
+  select(present) %>%
+  unlist()
+
+
+alfas<-list.samples %>% 
+  left_join(list.excluded_samples, by = "name") %>%
+ mutate(present=case_when(Taxonomy.x == Taxonomy.y ~ 
+                           1,
+           TRUE ~ 0.55)) %>%
+  select(present) %>%
+  unlist()
+```
+
+
+
+```{r}
+PCS.all_samples<-prcomp(covaraiants.all_samples)
+pcs_10.all_samples<-as.data.frame(PCS.all_samples$x[,1:10])
+pcs_10.all_samples<-cbind(identification,pcs_10)
+all_species<-list.samples$Taxonomy
+
+
+pc1_2.all_samples<- ggplot(PCS.all_samples, aes(PCS.all_samples$x[,1],PCS.all_samples$x[,2]))+
+    geom_point(aes(color=all_species),  shape = formas, size = 3 , alpha = alfas) +
+  xlab("PC 1 (64.69%)") +
+  ylab("PC 2 (29.67%)") +
+  nice_layout +
+  # theme(legend.title = element_text(size = 15),
+  #       legend.text = element_text(size = 15))
+  scale_fill_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6')) +
+  scale_color_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6')) 
+  
+
+pc1_2.all_samples
+
+
+1
+pc1_3.all_samples<- ggplot(PCS.all_samples, aes(PCS.all_samples$x[,1],PCS.all_samples$x[,3]))+
+    geom_point(aes(color=all_species),  shape = formas, size = 3 , alpha = 0.55) +
+  xlab("PC 1 (64.69%)") +
+  ylab("PC 3 (1.71%)") +
+  nice_layout +
+  # theme(legend.title = element_text(size = 15),
+  #       legend.text = element_text(size = 15))
+  scale_fill_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6')) +
+  scale_color_manual(values=c('#33A02C', '#A6CEE3', '#FF7F00', '#FB9A99', '#CAB2D6')) 
+  
+
+pc1_3.all_samples
+
+# side-by-side arranging
+pc_plots.all_samples<-ggarrange(pc1_2.all_samples  , pc1_3.all_samples, legend="none") 
+pc_plots.all_samples
+
+
+ggsave("../figures/pca_plots_all_samples.png", pc_plots.all_samples,  dpi = 300,   device = "png", height = 4)
+
+
+```
+```{r}
+# pc_plots.all_samples<-plot_grid(pc1_2.all_samples+ theme(legend.position="none"),
+#           pc1_3.all_samples + theme(legend.position="none"),
+#             labels = c("A", "B")
+# ) +
+#   theme_cowplot(12) +
+# theme(axis.title = element_blank()) + 
+#         theme(axis.title = element_blank()) +
+#   theme(axis.line=element_blank(),axis.text.x=element_blank(),
+#           axis.text.y=element_blank(),axis.ticks=element_blank(),
+#           axis.title.x=element_blank(),
+#           axis.title.y=element_blank(),legend.position="none",
+#           panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+#           panel.grid.minor=element_blank(),plot.background=element_blank())
+        #   theme(element_text(colour="white")) + 
+        # theme(element_line(colour="white"))
+
+
+pc_plots.all_samples<-plot_grid(pc1_2.all_samples+ theme(legend.position="none"),
+          pc1_3.all_samples + theme(legend.position="none"),
+            labels = c("A", "B"), align="vh",
+          axis = "b"
+          
+          # rows = 2
+          # rel_widths = c(1.01, 1)
+) 
+  
+pc_plots.all_samples
+
+ggsave("../figures/pca_plots_all_samples.png", pc_plots.all_samples,  dpi = 300,   device = "png", height = 4)
+
+```
+
+
+```{r}
+## calculate explained variance
+mx_transformed <- PCS.all_samples$x
+vars_transformed <- apply(mx_transformed, 2, var)
+
+variance_explained<- vars_transformed/sum(vars_transformed)
+variance_explained<- variance_explained * 100
+```
+
