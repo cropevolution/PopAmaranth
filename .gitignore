@@ -6,6 +6,9 @@ popamabrowser/
 
 data/processed/
 data/raw/
+sandbox/
+text/
+data/
 
 # General
 .DS_Store
